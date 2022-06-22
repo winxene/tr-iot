@@ -7,3 +7,16 @@
 - UI/Widgets : [LVGL8.x](https://github.com/lvgl/lvgl)
 - Framework : Arduino + PlatformIO ([ESP-IDF sample here](https://github.com/sukesh-ak/LVGL8-WT32-SC01-IDF)) 
 
+# Prerequisites
+To use this repo, firstly, make sure that PlatformIO is installed in your Visual Studio Code. You can simply go to the extension, and enable PlatformIO. 
+
+
+# How to Use
+
+* Make sure that you have installed Git to perform this action!
+
+- 1. Open your terminal and clone this repo to your desired path by typing the following command:
+```git clone https://github.com/winxene/tr-iot.git```
+
+- 2. Open the folder in visual studio code
+- 3. Build and run the project
