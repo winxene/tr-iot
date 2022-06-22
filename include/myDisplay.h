@@ -1,4 +1,3 @@
-
 #define LGFX_AUTODETECT // Autodetect board
 #define LGFX_USE_V1
 #include <LovyanGFX.hpp>//display driver, SPI etc.
@@ -14,6 +13,9 @@ static LGFX myDisplay;
 
 LV_IMG_DECLARE(drinkify);
 
+
+// lv_obj_t * lv_qrcode_create(lv_obj_t * parent, lv_coord_t size, lv_color_t dark_color, lv_color_t light_color);
+// lv_res_t lv_qrcode_update(lv_obj_t * qrcode, const void * data, uint32_t data_len);
 // void ui_start_button();
 // void ui_dynamic_obj(void);
 //insert in void setup in main.cpp

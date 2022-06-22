@@ -16,9 +16,9 @@ void Firebase_Init(const String &streamPath)
   Firebase.begin(&fbConfig, &fbAuth);
   Firebase.reconnectWiFi(true);
 
-#if defined(ESP8266)
-  fbdo.setBSSLBufferSize(2 * 1024, 1024);
-#endif
+// #if defined(ESP8266)
+//   fbdo.setBSSLBufferSize(2 * 1024, 1024);
+// #endif
 
   fbdo.setResponseSize(1024);
   Firebase.RTDB.setwriteSizeLimit(&fbdo, "small");
@@ -39,19 +39,19 @@ void Firebase_Init(const String &streamPath)
 
 void onFirebaseStreamTimeout(bool timeout) 
 {
+
 }
 
 void onFirebaseStream(FirebaseStream dataGathered)
 {
-    Serial.printf("onFirebaseStream: %s %s %s %s\n",
-    dataGathered.streamPath().c_str(),
-    dataGathered.dataPath().c_str(), dataGathered.dataType().c_str(),
-    dataGathered.stringData().c_str());
+    // Serial.printf("onFirebaseStream: %s %s %s %s\n",
+    // dataGathered.streamPath().c_str(),
+    // dataGathered.dataPath().c_str(), dataGathered.dataType().c_str(),
+    // dataGathered.stringData().c_str());
     if(dataGathered.boolData() == true)
     {
         Serial.println("Pump is ON");
         pumpLogic(true);
-        
     }
     else
     {
@@ -75,3 +75,4 @@ void pushToFirebase(const char *id,const char *token)
   Firebase.RTDB.setString(&fbdo, updatedToken, token);
   Firebase.RTDB.setBool(&fbdo, updatedStatus, false);
 }
+

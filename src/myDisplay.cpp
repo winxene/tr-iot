@@ -1,3 +1,4 @@
+#include <lv_conf.h>
 #include <myDisplay.h>
 #include <firebase.h>
 
@@ -36,6 +37,31 @@ void readTouchPad( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
     }
 }
 
+void display_init() {
+  myDisplay.begin();
+  myDisplay.init();
+  myDisplay.setBrightness(255);
+  lv_init();
+  lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * 10 );
+}
+
+void display_driver_init() {
+  static lv_disp_drv_t disp_drv;
+  lv_disp_drv_init(&disp_drv);
+
+  disp_drv.hor_res = screenWidth;
+  disp_drv.ver_res = screenHeight;
+  disp_drv.flush_cb = displayFlush;
+  disp_drv.draw_buf = &draw_buf;
+  lv_disp_drv_register(&disp_drv);
+
+  static lv_indev_drv_t indev_drv;
+  lv_indev_drv_init(&indev_drv);
+  indev_drv.type = LV_INDEV_TYPE_POINTER;
+  indev_drv.read_cb = readTouchPad;
+  lv_indev_drv_register(&indev_drv);
+}
+
 //taken from https://codereview.stackexchange.com/questions/29198/random-string-generator-in-c
 void generateString(size_t size){
   char stringResult[255];
@@ -64,6 +90,20 @@ void generateQRCode(lv_event_t * e){
     lv_qrcode_update(qrCode, text, strlen(text));
     lv_obj_clear_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
     pushToFirebase("/D-1", text);
+    bool showQRCode=true;
+    int counter=0;
+    while(showQRCode){
+      counter++;
+      delay(950);
+      if(counter>=10)
+      {
+        pushToFirebase("/D-1", " ");
+        lv_obj_add_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
+        counter=0;
+        showQRCode=false;
+        break;
+      }
+    }
   }
 }
 
@@ -76,7 +116,7 @@ void titleLabel(){
   lv_obj_set_style_text_font(titleLabel, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
-void ui_background() {
+void ui_background(){
   mainScreen = lv_obj_create(NULL);
   lv_obj_clear_flag(mainScreen, LV_OBJ_FLAG_SCROLLABLE); //cannot scroll
   logoImage = lv_img_create(mainScreen); 
@@ -89,7 +129,7 @@ void ui_background() {
   titleLabel();
 }
 
-void ui_start_button() {
+void ui_start_button(){
   lv_obj_t * label;
   startButton = lv_btn_create(mainScreen);
   lv_obj_add_event_cb(startButton, generateQRCode, LV_EVENT_ALL, NULL);
@@ -106,7 +146,6 @@ void ui_start_button() {
 
 void ui_dynamic_obj(void) {
   ui_start_button();
-  qrCode = lv_qrcode_create(mainScreen, 140, lv_color_hex3(0x000), lv_color_hex3(0xeef));
   lv_obj_add_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
   lv_obj_set_pos(qrCode, 0, -150);
   lv_obj_set_align(qrCode, LV_ALIGN_BOTTOM_MID);
@@ -114,31 +153,8 @@ void ui_dynamic_obj(void) {
 
 void ui_init() {
   ui_background();
+  qrCode = lv_qrcode_create(mainScreen, 140, lv_color_hex3(0x000), lv_color_hex3(0xeef));
   ui_dynamic_obj();
   lv_disp_load_scr(mainScreen);
 }
 
-void display_init() {
-  myDisplay.begin();
-  myDisplay.init();
-  myDisplay.setBrightness(255);
-  lv_init();
-  lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * 10 );
-}
-
-void display_driver_init() {
-  static lv_disp_drv_t disp_drv;
-  lv_disp_drv_init(&disp_drv);
-
-  disp_drv.hor_res = screenWidth;
-  disp_drv.ver_res = screenHeight;
-  disp_drv.flush_cb = displayFlush;
-  disp_drv.draw_buf = &draw_buf;
-  lv_disp_drv_register(&disp_drv);
-
-  static lv_indev_drv_t indev_drv;
-  lv_indev_drv_init(&indev_drv);
-  indev_drv.type = LV_INDEV_TYPE_POINTER;
-  indev_drv.read_cb = readTouchPad;
-  lv_indev_drv_register(&indev_drv);
-}
