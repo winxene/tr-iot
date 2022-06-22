@@ -13,7 +13,7 @@ To use this repo, firstly, make sure that PlatformIO is installed in your Visual
 
 # How to Use
 
-* Make sure that you have installed Git to perform this action!
+Make sure that you have installed Git to perform this action!
 
 - 1. Open your terminal and clone this repo to your desired path by typing the following command:
 ```git clone https://github.com/winxene/tr-iot.git```
