@@ -2,7 +2,7 @@
 #include <firebase.h>
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.// const int dpm = 23; //diaphragm pump motor , temp dikomen dlu   
-int timeCounter = 0;
+int8_t timeCounter = 0;
 int8_t targetTime = 268;
 
 void pumpSetup()
