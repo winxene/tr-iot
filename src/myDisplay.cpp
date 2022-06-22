@@ -8,6 +8,7 @@ lv_obj_t *logoImage;
 lv_obj_t * startButton;
 char text [255];
 
+
 void displayFlush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p )
 {
   uint32_t w = ( area->x2 - area->x1 + 1 );
@@ -86,23 +87,24 @@ void generateString(size_t size){
 void generateQRCode(lv_event_t * e){
   lv_event_code_t code = lv_event_get_code(e);
   if (code == LV_EVENT_CLICKED || code == LV_EVENT_FOCUSED) {
-    generateString(16);
+    generateString(17);
     lv_qrcode_update(qrCode, text, strlen(text));
-    lv_obj_clear_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
     pushToFirebase("/D-1", text);
+    lv_obj_clear_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
     bool showQRCode=true;
+    int clock= 157;
     int counter=0;
     while(showQRCode){
       counter++;
-      delay(950);
-      if(counter>=10)
+      delay(50);
+      if(counter>=clock)
       {
-        pushToFirebase("/D-1", " ");
         lv_obj_add_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
         counter=0;
         showQRCode=false;
         break;
       }
+      delay(10);
     }
   }
 }

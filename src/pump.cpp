@@ -3,7 +3,7 @@
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.// const int dpm = 23; //diaphragm pump motor , temp dikomen dlu   
 int8_t timeCounter = 0;
-int8_t targetTime = 268;
+int8_t targetTime = 268; //clock
 
 void pumpSetup()
 {

@@ -3,6 +3,7 @@
 #include <LovyanGFX.hpp>//display driver, SPI etc.
 #include <lvgl.h>
 #include <lv_conf.h>
+
 /*** Setup screen resolution for LVGL ***/
 static const uint16_t screenWidth = 320;
 static const uint16_t screenHeight = 480;

@@ -44,6 +44,7 @@ void onFirebaseStreamTimeout(bool timeout)
 
 void onFirebaseStream(FirebaseStream dataGathered)
 {
+    // to read data
     // Serial.printf("onFirebaseStream: %s %s %s %s\n",
     // dataGathered.streamPath().c_str(),
     // dataGathered.dataPath().c_str(), dataGathered.dataType().c_str(),
