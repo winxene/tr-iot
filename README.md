@@ -1,5 +1,5 @@
 # Drinkify Dispenser
-
+For the mobile-app part, please visit this link: https://github.com/winxene/tr-mobile-app
 
 - This repo is for learning purpose only
 - Board : WT32-SC01 from Wireless Tag (Seeed Studio also carries the same)  
@@ -15,8 +15,8 @@ To use this repo, firstly, make sure that PlatformIO is installed in your Visual
 
 Make sure that you have installed Git to perform this action!
 
-- 1. Open your terminal and clone this repo to your desired path by typing the following command:
+1. Open your terminal and clone this repo to your desired path by typing the following command:
 ```git clone https://github.com/winxene/tr-iot.git```
 
-- 2. Open the folder in visual studio code
-- 3. Build and run the project
+2. Open the folder in visual studio code
+3. Build and run the project
