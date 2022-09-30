@@ -19,4 +19,5 @@ Make sure that you have installed Git to perform this action!
 ```git clone https://github.com/winxene/tr-iot.git```
 
 2. Open the folder in visual studio code
-3. Build and run the project
+3. Make sure that PlatformIO is installed. if not, you can visit this link: https://platformio.org/
+4. Build and run the project
