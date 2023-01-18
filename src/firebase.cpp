@@ -14,10 +14,6 @@ void Firebase_Init(const String &streamPath)
   Firebase.begin(&fbConfig, &fbAuth);
   Firebase.reconnectWiFi(true);
 
-#if defined(ESP8266)
-  fbdo.setBSSLBufferSize(2 * 1024, 1024);
-#endif
-
   fbdo.setResponseSize(1024);
   Firebase.RTDB.setwriteSizeLimit(&fbdo, "small");
   while (!Firebase.ready())
@@ -37,31 +33,11 @@ void Firebase_Init(const String &streamPath)
 
 void onFirebaseStreamTimeout(bool timeout) 
 {
-  // Serial.printf("Firebase stream timeout: %d\n", timeout);
+  Serial.printf("Firebase stream timeout: %d\n", timeout);
 }
 
 void onFirebaseStream(FirebaseStream dataGathered)
 {
-    Serial.printf("onFirebaseStream: %s %s %s %s\n",
-    dataGathered.streamPath().c_str(),
-    dataGathered.dataPath().c_str(), dataGathered.dataType().c_str(),
-    dataGathered.stringData().c_str());
-    // if (dataGathered.dataType() == "string")
-    // {
-    //   String data = dataGathered.stringData();
-    //   if (data == "true")
-    //   {
-    //     Serial.println("Pump is ON");
-    //     pumpLogic(true);
-    //   }
-    //   else if (data == "false")
-    //   {
-    //     Serial.println("Pump is OFF");
-    //     pumpLogic(false);
-    //   }
-    // }
-    // if(dataGathered.dataType() == "bool")
-    // { 
       if(dataGathered.boolData() == true)
       {
           Serial.println("Pump is ON");
@@ -72,8 +48,8 @@ void onFirebaseStream(FirebaseStream dataGathered)
           Serial.println("Pump is OFF");
           pumpLogic(false);
       }
-    // }
-}
+    }
+
 
 void pushToFirebase(const char *id,const char *token)
 {
@@ -89,6 +65,4 @@ void pushToFirebase(const char *id,const char *token)
 
   Firebase.RTDB.setString(&fbdo, updatedToken, token);
   Firebase.RTDB.setBool(&fbdo, updatedStatus, false);
-  // Firebase.RTDB.setBool(&fbdo, updatedStatus, false);
-  // Serial.println("Dispenser Logic: OFF");
 }
