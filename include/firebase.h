@@ -1,7 +1,6 @@
 #ifndef __FIREBASE_H__
 #define __FIREBASE_H__
 #include <Firebase_ESP_Client.h>
-#include <lvgl.h>
 extern FirebaseData fbdo;
 extern bool showQRCode;
 extern lv_obj_t * qrCode;
