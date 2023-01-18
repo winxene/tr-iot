@@ -11,7 +11,7 @@ char text [255];
 
 const char *ssid = "hi";
 const char *password = "senpai8668";
-
+bool showQRCode = true;
 
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.// const int dpm = 23; //diaphragm pump motor , temp dikomen dlu    
@@ -20,7 +20,8 @@ long currentTime = 0;
 long breakTime = 0;
 unsigned long timeCounter = 0;
 
-long targetTime = 268;
+// long targetTime = 268;
+long targetTime = 77; //for 100ml
 bool sistem = false;
 
 LV_IMG_DECLARE(drinkify);
@@ -28,8 +29,7 @@ LV_IMG_DECLARE(drinkify);
 void pumpSetup()
 {
   pinMode(dpm, OUTPUT);
-  // digitalWrite(dpm, HIGH);
-  // delay(1000);
+  digitalWrite(dpm, HIGH);
   // digitalWrite(dpm, LOW);
 }
 
@@ -37,15 +37,17 @@ void pumpLogic(bool pump)
 {
   //HIGH= off, LOW= on
   while(pump){
-    // Serial.println("pump logic is on");
     delay(50);
     int cm = sonar.ping_cm();
+    Serial.printf("cm: %d\n",cm);
     if (cm > 1 && cm < 6){
       timeCounter++;
       Serial.printf("on timer: %d\n",timeCounter);
       digitalWrite(dpm, LOW);
+      // digitalWrite(dpm, HIGH);
       if(timeCounter>=targetTime){
         digitalWrite(dpm, HIGH);
+        // digitalWrite(dpm, LOW);
         Serial.println("done~!");
         pushToFirebase("/D-1", " ");
         timeCounter=0;
@@ -115,7 +117,7 @@ void generateQRCode(lv_event_t * e){
     lv_qrcode_update(qrCode, text, strlen(text));
     lv_obj_clear_flag(qrCode, LV_OBJ_FLAG_HIDDEN);
     pushToFirebase("/D-1", text);
-    bool showQRCode=true;
+    // bool showQRCode=true;
     int clock= 157;
     int counter=0;
     while(showQRCode){
@@ -190,7 +192,6 @@ void setup()
   Serial.begin(115200);
   WiFiConnect();
 
-  
   pumpSetup();
   myDisplay.begin();
   myDisplay.init();
@@ -214,7 +215,7 @@ void setup()
   lv_indev_drv_register(&indev_drv);
   ui_init();
   
-  Firebase_Init("/D-1/phoneData");
+  Firebase_Init("/D-1/phoneData/status");
   pushToFirebase("/D-1", " ");
 }
 void loop() {
