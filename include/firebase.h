@@ -2,8 +2,6 @@
 #define __FIREBASE_H__
 #include <Firebase_ESP_Client.h>
 extern FirebaseData fbdo;
-extern bool showQRCode;
-extern lv_obj_t * qrCode;
 void Firebase_Init(const String& streamPath);
 void onFirebaseStream(FirebaseStream data);
 void onFirebaseStreamTimeout(bool timeout);
