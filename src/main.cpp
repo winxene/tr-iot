@@ -3,6 +3,8 @@
 #include "wifiConfig.h"
 #include "dispenser.h"
 
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.//    
+
 lv_obj_t * mainScreen;
 lv_obj_t * qrCode; 
 lv_obj_t *logoImage;
@@ -13,11 +15,10 @@ const char *ssid = "hi";
 const char *password = "senpai8668";
 bool showQRCode = true;
 
-
-NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.// const int dpm = 23; //diaphragm pump motor , temp dikomen dlu    
 long prevTime = 0;
 long currentTime = 0;
 long breakTime = 0;
+long elapsedTime = 0;
 unsigned long timeCounter = 0;
 
 // long targetTime = 268;
@@ -30,7 +31,6 @@ void pumpSetup()
 {
   pinMode(dpm, OUTPUT);
   digitalWrite(dpm, HIGH);
-  // digitalWrite(dpm, LOW);
 }
 
 void pumpLogic(bool pump)
@@ -52,6 +52,7 @@ void pumpLogic(bool pump)
         pushToFirebase("/D-1", " ");
         timeCounter=0;
         pump = false;
+        ESP.restart();
         break;
       }
       delay(10);
@@ -190,9 +191,9 @@ void ui_init() {
 void setup()
 {
   Serial.begin(115200);
+  pumpSetup();
   WiFiConnect();
 
-  pumpSetup();
   myDisplay.begin();
   myDisplay.init();
   myDisplay.setBrightness(255);
